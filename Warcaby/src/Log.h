@@ -1,4 +1,5 @@
 #pragma once
 #include <iostream>
-#define LOG(x) 
-//std::cout<<x<<std::endl
+//comment it out if you want to debug
+#define LOG(x) //std::cout<<x<<std::endl
+

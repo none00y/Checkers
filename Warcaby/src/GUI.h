@@ -133,7 +133,7 @@ public:
 	int posx;
 	int posy;
 	int sideofsquare = side/8;
-	SDL_Rect field = { posx+side/8,posy,side / 8,side / 8 };
+	SDL_Rect field = { 0,0,side/8,side/8 };
 	LTexture* UnitVisual;
 	int* relatedPosition;
 	Field(int x, int y, int* pos, void* UnitVisual);
@@ -150,6 +150,8 @@ Field::Field(int x, int y, int* pos, void* UnitVisualout)
 	posy = y;
 	relatedPosition = pos;
 	UnitVisual = (LTexture*) UnitVisualout;
+	field.x = x;
+	field.y = y;
 }
 Field::Field()
 {
@@ -187,10 +189,10 @@ bool Init()
 		}
 		else
 		{
-			SCREENHEIGHT = dm.h- 50;
+			SCREENHEIGHT = dm.h- 70;
 			SCREENWIDTH = dm.w;
-			side = 800;//(SCREENHEIGHT <= SCREENWIDTH) * SCREENHEIGHT + (SCREENWIDTH <= SCREENHEIGHT) * SCREENWIDTH;
-			gWindow = SDL_CreateWindow("Chekers", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, side, side, SDL_WINDOW_SHOWN);
+			side = (((SCREENHEIGHT <= SCREENWIDTH) * SCREENHEIGHT + (SCREENWIDTH <= SCREENHEIGHT) * SCREENWIDTH)/8)*8;
+			gWindow = SDL_CreateWindow("Chekers", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, side, side, SDL_WINDOW_SHOWN);
 			if (gWindow == NULL)
 			{
 				printf("Window couldnt be created, SDL_error:%s", SDL_GetError());
@@ -235,7 +237,8 @@ void SetField(Board &board)
 			x = 0;
 			y += (side / 8);
 		}
-		BoardFields[i] = { x,y,(int*)(board.A1+1*i),(void*)&Unit };
+		BoardFields[i] = { x,y,(int*)(board.A1 + 1 * i),(void*)&Unit };
+		
 		//std::cout << "y:" << y << "," << "x" << x<<std::endl;
 		
 	}
@@ -258,29 +261,34 @@ void RenderUnits()
 	for (int i = 0; i < 64;i++)
 	{
 		int x=0, y=0;
-		SDL_Rect Unitsize = { x,y,side / 8,side / 8 };
-		Unitsize.x = BoardFields[i].posx;
+	//	SDL_Rect Unitsize = { x,y,side / 8,side / 8 };
+		//Unitsize.x = BoardFields[i].posx;
 
-		Unitsize.y = BoardFields[i].posy;
+		//Unitsize.y = BoardFields[i].posy;
 		switch (*(BoardFields[i].relatedPosition))
 		{
 		case 0:
-			Unitsize = { 0,0,0,0 };
+			//Unitsize = { 0,0,0,0 };
+			break;
 		case 1:
 			BoardFields[i].UnitVisual->setColor(255, 255, 255);
 			BoardFields[i].UnitVisual = &Unit; 
+			BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 			break;
 		case 2:
 			BoardFields[i].UnitVisual->setColor(0, 0, 0); 
 			BoardFields[i].UnitVisual = &Unit;
+			BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 			break;
 		case 3:
 		{BoardFields[i].UnitVisual = UnitUpptr;
 		BoardFields[i].UnitVisual->setColor(255, 255, 255);
+		BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 		}	break;
 		case 4:
 		{	BoardFields[i].UnitVisual = UnitUpptr;
 		BoardFields[i].UnitVisual->setColor(0, 0, 0);
+		BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 		}
 			break;
 		}
@@ -290,7 +298,7 @@ void RenderUnits()
 			if (*(BoardFields[i].relatedPosition) == 2)
 				BoardFields[i].UnitVisual->setColor(0, 0, 0);*/
 
-			BoardFields[i].UnitVisual->render(NULL,&Unitsize);
+			//BoardFields[i].UnitVisual->render(NULL,&BoardFields[i].field);
 		
 	}
 }
@@ -339,7 +347,11 @@ void close()
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
 	gWindow = NULL;
-
+	Unit.free();
+	gBoard.free();
+	UnitUpgrade.free();
+	BlackWins.free();
+	WhiteWins.free();
 	SDL_Quit;
 
 

@@ -363,14 +363,15 @@ int main(int argc, char* argv[])
 						WhiteWins.renderFscreen();
 					}
 						
-					BoardFields[8].renderHits();
 					SDL_SetRenderDrawBlendMode(gRenderer, SDL_BLENDMODE_BLEND);
 						SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0xFF, 0x45);
 						SDL_RenderFillRect(gRenderer, &SizeOfField);
 					//SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 					//Field* currentfield = MouseToField(x, y, side);//->UnitVisual->render(x,y);
-					
+					//	SDL_Rect test = { 0,0,100,100 };
+					//	SDL_RenderFillRect(gRenderer, &test);
 					//SDL_Delay(200);
+					//BoardFields[0].renderHits();
 					SDL_RenderPresent(gRenderer);
 					
 
