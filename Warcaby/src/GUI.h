@@ -253,7 +253,23 @@ Field* MouseToField(int& x, int& y, int side)
 	//std::cout << (int)BoardFields[x / (side / 8) + y / (side / 8) * 8].relatedPosition - (int)BoardFields[0].relatedPosition << std::endl;
 	return &BoardFields[x / (side / 8) + (y / (side / 8)) * 8];
 }
+Field* PressedField(SDL_Event& e)
+{
+	int x = 0;
+	int y = 0;
 
+	Field* currentfield = MouseToField(x, y, side);
+
+	//SDL_Rect SizeOfField = { currentfield->posx ,currentfield->posy ,side / 8,side / 8 };
+   // SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0xFF, 0xFF);
+   // SDL_RenderFillRect(gRenderer, &SizeOfField);
+	return currentfield;
+
+
+
+}
+#define WHITE 255,255,255
+#define BLACK 30,30,30
 void RenderUnits()
 {
 	
@@ -271,23 +287,23 @@ void RenderUnits()
 			//Unitsize = { 0,0,0,0 };
 			break;
 		case 1:
-			BoardFields[i].UnitVisual->setColor(255, 255, 255);
+			BoardFields[i].UnitVisual->setColor(WHITE);
 			BoardFields[i].UnitVisual = &Unit; 
 			BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 			break;
 		case 2:
-			BoardFields[i].UnitVisual->setColor(0, 0, 0); 
+			BoardFields[i].UnitVisual->setColor(BLACK); 
 			BoardFields[i].UnitVisual = &Unit;
 			BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 			break;
 		case 3:
-		{BoardFields[i].UnitVisual = UnitUpptr;
-		BoardFields[i].UnitVisual->setColor(255, 255, 255);
+		{BoardFields[i].UnitVisual = &UnitUpgrade;
+		BoardFields[i].UnitVisual->setColor(WHITE);
 		BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 		}	break;
 		case 4:
-		{	BoardFields[i].UnitVisual = UnitUpptr;
-		BoardFields[i].UnitVisual->setColor(0, 0, 0);
+		{	BoardFields[i].UnitVisual = &UnitUpgrade;
+		BoardFields[i].UnitVisual->setColor(BLACK);
 		BoardFields[i].UnitVisual->render(NULL, &BoardFields[i].field);
 		}
 			break;

@@ -14,7 +14,7 @@
 	{
 		up, down
 	};
-int* Select(Board& board, Player& player,bool movetype);
+//int* Select(Board& board, Player& player,bool movetype);
 
 //bool MainMovement(Player& player,Board& board, int* position)
 //{
@@ -128,21 +128,7 @@ bool LoseCondition(Player& player,Board& board)
 
 	
 }
-Field* PressedField(SDL_Event &e)
-{
-	int x = 0;
-	int y = 0;
 
-	 	 Field* currentfield  = MouseToField(x, y, side);
-	
-			 //SDL_Rect SizeOfField = { currentfield->posx ,currentfield->posy ,side / 8,side / 8 };
-			// SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0xFF, 0xFF);
-			// SDL_RenderFillRect(gRenderer, &SizeOfField);
-			 return currentfield;
-
-		 
-
-}
 enum
 {
 	SELECT = 0, MOVE = 1, NEUTRAL = 0
